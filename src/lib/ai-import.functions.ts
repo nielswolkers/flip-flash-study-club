@@ -46,10 +46,11 @@ export const aiExtractCards = createServerFn({ method: "POST" })
         input: [{ role: "user", content }],
         text: { format: { type: "json_object" } },
       });
-      const out = (r.output ?? [])
-        .flatMap((o) => ("content" in o && Array.isArray(o.content) ? o.content : []))
-        .map((c) => (c && typeof c === "object" && "text" in c && typeof c.text === "string" ? c.text : ""))
-        .join("");
+      let out = "";
+      for (const o of r.output ?? []) {
+        if (o.type !== "message") continue;
+        for (const c of o.content) if (c.type === "output_text") out += c.text;
+      }
       const m = out.match(/\{[\s\S]*\}/);
       const parsed = JSON.parse(m ? m[0] : out) as { title?: string; cards?: AiCard[] };
       const cards = (parsed.cards ?? [])
