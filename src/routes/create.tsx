@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { SetEditor } from "@/components/SetEditor";
+import { CreateChooser } from "@/components/CreateChooser";
 import { Shell } from "@/components/ui-kit";
 
 export const Route = createFileRoute("/create")({
@@ -13,5 +13,5 @@ export const Route = createFileRoute("/create")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
-  component: () => <Shell><SetEditor /></Shell>,
+  component: () => <Shell><CreateChooser /></Shell>,
 });
