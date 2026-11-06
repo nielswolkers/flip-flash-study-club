@@ -58,7 +58,7 @@ export const aiExtractCards = createServerFn({ method: "POST" })
         .map((c) => ({ term: c.term.trim(), definition: c.definition.trim() }));
       return { title: parsed.title ?? "", cards, error: cards.length ? undefined : "No cards could be found." };
     } catch (e) {
-      console.error("aiExtractCards", e);
+      console.error("aiExtractCards", e, e instanceof GatewayError ? JSON.stringify(e.remote) : "");
       if (e instanceof GatewayError && e.httpStatus === 402) return { title: "", cards: [], error: "AI credits have run out." };
       if (e instanceof GatewayError && e.httpStatus === 429) return { title: "", cards: [], error: "Too many requests — try again in a minute." };
       return { title: "", cards: [], error: "The AI scan failed. Please try again." };
