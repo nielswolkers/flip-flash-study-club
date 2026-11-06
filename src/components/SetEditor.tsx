@@ -3,11 +3,11 @@ import { useState } from "react";
 import { Btn } from "@/components/ui-kit";
 import { parseImport, uid, upsertSet, type StudySet } from "@/lib/store";
 
-export function SetEditor({ initial }: { initial?: StudySet }) {
+export function SetEditor({ initial, draft }: { initial?: StudySet; draft?: { title: string; description?: string; cards: { term: string; definition: string }[] } }) {
   const nav = useNavigate();
-  const [title, setTitle] = useState(initial?.title ?? "");
-  const [description, setDescription] = useState(initial?.description ?? "");
-  const [cards, setCards] = useState(initial?.cards ?? [1, 2, 3].map(() => ({ id: uid(), term: "", definition: "" })));
+  const [title, setTitle] = useState(initial?.title ?? draft?.title ?? "");
+  const [description, setDescription] = useState(initial?.description ?? draft?.description ?? "");
+  const [cards, setCards] = useState(initial?.cards ?? draft?.cards.map((c) => ({ id: uid(), ...c })) ?? [1, 2, 3].map(() => ({ id: uid(), term: "", definition: "" })));
   const [importOpen, setImportOpen] = useState(false);
   const [importText, setImportText] = useState("");
 
